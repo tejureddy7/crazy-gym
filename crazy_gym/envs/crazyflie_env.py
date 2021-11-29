@@ -7,7 +7,11 @@ import sys
 import copy
 import random
 import math
+<<<<<<< HEAD
 
+=======
+from enum import Enum
+>>>>>>> edf03d25b3b5d110fcd59a6871c610cb93cec29d
 from gym import spaces, error
 from enum import IntEnum
 import logging
@@ -24,15 +28,22 @@ from cflib.utils.multiranger import Multiranger
 
 
 
+
 class CrazyFlieBaseEnv(gym.Env):
 
     # lets say we have 5 actions (hover, left, right, forward, back)
-    class Actions(IntEnum):
-        left = 0
-        right = 1
-        forward = 2
-        back = 3
-        hover = 4
+    class Actions(Enum):
+            left = 0
+            right = 1
+            forward = 2
+            back = 3
+            hover = 4
+            
+        # left = 0
+        # right = 1
+        # forward = 2
+        # back = 3
+        # hover = 4
 
 
     def __init__(self, seed=None):
@@ -44,6 +55,7 @@ class CrazyFlieBaseEnv(gym.Env):
         self.action_space = spaces.Discrete(len(self.actions))
 
         #### write code for connecting to the crazyflie using radio ###
+<<<<<<< HEAD
 
         #initialize drivers
         cflib.crtp.init_drivers()
@@ -58,16 +70,36 @@ class CrazyFlieBaseEnv(gym.Env):
         # Only output errors from the logging framework
         logging.basicConfig(level=logging.ERROR)
 
+=======
+        import logging
+        import sys
+        import time
+
+        import cflib.crtp
+        from cflib.crazyflie import Crazyflie
+        from cflib.crazyflie.syncCrazyflie import SyncCrazyflie
+        from cflib.positioning.motion_commander import MotionCommander
+        from cflib.utils import uri_helper
+        from cflib.utils.multiranger import Multiranger
+
+        #Radio address
+        URI = uri_helper.uri_from_env(default='radio://0/80/2M/E7E7E7E7E7')
+>>>>>>> edf03d25b3b5d110fcd59a6871c610cb93cec29d
         self.reset()
+
+        if len(sys.argv) > 1:
+            URI = sys.argv[1]
+
+        # Only output errors from the logging framework
+        logging.basicConfig(level=logging.ERROR)
 
     def reset(self):
 
         #maybe reset will hover the drone to a fixed z
-
+        mc.stop()
         obs = None
 
         return obs
-
 
 
     def step(self, action):
@@ -77,24 +109,37 @@ class CrazyFlieBaseEnv(gym.Env):
         done = False
         reward = 0
         obs = None
+<<<<<<< HEAD
         cf = Crazyflie(rw_cache='./cache')
 
 
         with SyncCrazyflie(self.URI, cf=cf) as scf:
+=======
+
+        cf = Crazyflie(rw_cache='./cache')
+        with SyncCrazyflie(URI, cf=cf) as scf:
+>>>>>>> edf03d25b3b5d110fcd59a6871c610cb93cec29d
         # A Crazyflie instance is created and is now connected. If the connection failes,
         # an exception is raised.
         # The MotionCommander is intended to simplify basic autonomous flight,
         # We take off when the commander is created
+<<<<<<< HEAD
             DEFAULT_HEIGHT = 0.4
             with MotionCommander(scf, default_height=DEFAULT_HEIGHT) as self.mc:
                 with Multiranger(scf) as multiranger:
                     keep_flying = True
                     
+=======
+            with MotionCommander(scf) as motion_commander:
+                with Multiranger(scf) as multiranger:
+                    keep_flying = True
+>>>>>>> edf03d25b3b5d110fcd59a6871c610cb93cec29d
 
                     while keep_flying:
                         VELOCITY = 0.5
                         velocity_x = 0.0
                         velocity_y = 0.0
+<<<<<<< HEAD
                         print("action", action)
                         print("self.actions.left",self.actions.left)
                         
@@ -122,5 +167,30 @@ class CrazyFlieBaseEnv(gym.Env):
                         if action == self.actions.hover:            
                             mc.stop()
                             time.sleep(1)
+=======
 
+                        # if action == self.actions.left:
+                        if action == self.actions.left:
+                            
+                        # write code to move drone to left
+                            velocity_x -= VELOCITY
+
+                        if action == self.actions.right:
+                            print("right")
+                            velocity_x -= VELOCITY
+                            # write code to move drone to right
+                            
+
+                        if action == self.actions.front:
+                            
+                        # write code to move drone to left
+                            velocity_y += VELOCITY
+
+                        if action == self.actions.back:
+                            
+                        # write code to move drone to left
+                            velocity_y -= VELOCITY
         return obs, reward, done, {}
+
+>>>>>>> edf03d25b3b5d110fcd59a6871c610cb93cec29d
+

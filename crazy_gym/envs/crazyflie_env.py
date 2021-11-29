@@ -76,15 +76,12 @@ class CrazyFlieBaseEnv(gym.Env):
     def reset(self):
 
         #maybe reset will hover the drone to a fixed z
-        mc.stop()
         obs = None
 
         return obs
 
 
     def step(self, action):
-
-
 
         done = False
         reward = 0
@@ -134,4 +131,7 @@ class CrazyFlieBaseEnv(gym.Env):
                         if action == self.actions.hover:            
                             mc.stop()
                             time.sleep(1)
+
+
+                        return obs, reward, done, {}
 

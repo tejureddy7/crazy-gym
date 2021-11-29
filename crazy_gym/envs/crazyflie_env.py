@@ -1,5 +1,5 @@
 '''
-This examples uses the Flow and Multi-ranger decks to move in all directions 
+This examples uses the Flow and Multi-ranger decks to move crazyflie in all directions 
 '''
 import gym
 import numpy as np
@@ -28,19 +28,12 @@ from cflib.utils.multiranger import Multiranger
 class CrazyFlieBaseEnv(gym.Env):
 
     # lets say we have 5 actions (hover, left, right, forward, back)
-    class Actions(Enum):
+    class Actions(IntEnum):
             left = 0
             right = 1
             forward = 2
             back = 3
             hover = 4
-            
-        # left = 0
-        # right = 1
-        # forward = 2
-        # back = 3
-        # hover = 4
-
 
     def __init__(self, seed=None):
 
@@ -65,13 +58,6 @@ class CrazyFlieBaseEnv(gym.Env):
         # Only output errors from the logging framework
         logging.basicConfig(level=logging.ERROR)
 
-        self.reset()
-
-        if len(sys.argv) > 1:
-            URI = sys.argv[1]
-
-        # Only output errors from the logging framework
-        logging.basicConfig(level=logging.ERROR)
 
     def reset(self):
 
@@ -86,6 +72,7 @@ class CrazyFlieBaseEnv(gym.Env):
         done = False
         reward = 0
         obs = None
+        
         cf = Crazyflie(rw_cache='./cache')
 
 
@@ -104,8 +91,6 @@ class CrazyFlieBaseEnv(gym.Env):
                         VELOCITY = 0.5
                         velocity_x = 0.0
                         velocity_y = 0.0
-                        print("action", action)
-                        print("self.actions.left",self.actions.left)
                         
                         #left
                         if action == self.actions.left:
